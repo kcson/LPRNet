@@ -1,8 +1,9 @@
-train_dir: '../datas/kor-plates/train/'
-valid_dir: '../datas/kor-plates/valid/'
-test_dir: 'test_imgs/'
+train_dir: '/Users/kcson/mywork/data/lpr_sample_train'
+valid_dir: '/Users/kcson/mywork/data/lpr_sample_valid'
+test_dir: 'data/test'
 saving_ckpt: 'saving_ckpt'
-pretrained: 'weights/lprnet_kor.pt'
+#pretrained: 'weights/lprnet_kor.pt'
+pretrained: 'weights/last.ckpt'
 img_size: !!python/tuple [100, 50]
 dropout_rate: 0.5
 weight_decay: 0.00002

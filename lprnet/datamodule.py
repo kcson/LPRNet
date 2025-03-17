@@ -4,6 +4,7 @@ import random
 import torch
 import numpy as np
 import cv2
+import unicodedata
 from torch.utils.data import Dataset, DataLoader
 from imutils import paths
 import lightning as L
@@ -88,7 +89,9 @@ class LPRNetDataset(Dataset):
 
         basename = os.path.basename(filename)
         imgname, suffix = os.path.splitext(basename)
-        imgname = imgname.split("-")[0].split("_")[0]
+        # imgname = imgname.split("-")[0].split("_")[0]
+        imgname = imgname.split(".")[0].split("-")[0]
+        imgname = unicodedata.normalize('NFC', imgname)
         imgname = imgname.upper()
         label = encode(imgname, self.args.chars)
 

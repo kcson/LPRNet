@@ -29,15 +29,22 @@ def decode(preds, chars):
     for i in range(preds.shape[0]):
         pred = preds[i, :, :]
         pred_label = list()
+        pred_max_score = list()
         for j in range(pred.shape[1]):
             pred_label.append(np.argmax(pred[:, j], axis=0))
+            # max_score = torch.max(pred[:, j], dim=0).values.item()
+            # max_index = torch.max(pred[:, j], dim=0).indices.item()
+            # pred_max_score.append(max_score)
+            # print(max_index,' : ',max_score)
         no_repeat_blank_label = list()
         pre_c = ""
-        for c in pred_label:  # dropout repeated label and blank label
+        for k, c in enumerate(pred_label):  # dropout repeated label and blank label
             if (pre_c == c) or (c == len(chars) - 1):
                 if c == len(chars) - 1:
                     pre_c = c
                 continue
+            # if pred_max_score[k] < 9.0:
+            #     continue
             no_repeat_blank_label.append(c)
             pre_c = c
         pred_labels.append(no_repeat_blank_label)
@@ -52,13 +59,13 @@ def decode(preds, chars):
 
 
 def accuracy(logits, labels, lengths, chars):
-    preds = logits.cpu().detach().numpy()
+    preds = logits.cpu().detach().float().numpy()
     _, pred_labels = decode(preds, chars)
 
     TP, total = 0, 0
     start = 0
     for i, length in enumerate(lengths):
-        label = labels[start : start + length]
+        label = labels[start: start + length]
         start += length
         if np.array_equal(np.array(pred_labels[i]), label.cpu().numpy()):
             TP += 1
