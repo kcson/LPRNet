@@ -51,7 +51,7 @@ if __name__ == "__main__":
                 monitor="val-acc",
                 mode="max",
                 min_delta=0.00,
-                patience=100,
+                patience=2000,
                 verbose=True,
             ),
             LearningRateMonitor(logging_interval="step"),
